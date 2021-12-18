@@ -7,7 +7,7 @@ Array.prototype.filter = function(condition) {
 	return arr;
 };
 
-const { startProcess, stopProcess, getLogs } = require('../pm2');
+const { startProcess, stopProcess, getLogs, restartProcess } = require('../pm2');
 
 const chalk = require('chalk');
 
@@ -81,8 +81,7 @@ module.exports = function(app, db) {
 			await startProcess(id);
 			req.flash('success', 'Process started!');
 		} else if (action == 'restart') {
-			await stopProcess(id);
-			await startProcess(id);
+			await restartProcess(id);
 			req.flash('success', 'Process restarted!');
 		}
 		res.redirect('back');

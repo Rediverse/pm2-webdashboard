@@ -9,9 +9,20 @@ const fetchProc = arr =>
 	new Promise(async resolve => {
 		await exec(listCommand, async (err, processRaw, stderr) => {
 			// console.log(processRaw);
-			await JSON.parse(processRaw).forEach(process => {
-				let uptime = moment.duration(moment.now() - process.pm2_env.pm_uptime, 'milliseconds').humanize();
-				console.log(uptime, moment.now() - process.pm2_env.pm_uptime);
+			await JSON.parse(processRaw).forEach(async process => {
+				let now = Math.floor(new Date().getTime() / 1000);
+				console.log(
+					now,
+					Math.floor(process.pm2_env.pm_uptime / 1000),
+					now - Math.floor(process.pm2_env.pm_uptime / 1000)
+				);
+
+				let uptime = now - Math.floor(process.pm2_env.pm_uptime / 1000);
+
+				uptime = moment.duration(uptime, 'seconds').humanize();
+
+				console.log(uptime);
+
 				arr.push({
 					name: process.name,
 					id: process.pm_id,
@@ -39,6 +50,13 @@ const startProcess = id =>
 		});
 	});
 
+const restartProcess = id =>
+	new Promise(async resolve => {
+		await exec(`pm2 restart ${id}`, async (err, processRaw, stderr) => {
+			resolve();
+		});
+	});
+
 const getLogs = id =>
 	new Promise(async resolve => {
 		await exec(`pm2 logs ${id}`, async (err, processRaw, stderr) => {
@@ -50,5 +68,10 @@ module.exports = {
 	fetchProc,
 	startProcess,
 	stopProcess,
+	restartProcess,
 	getLogs
 };
+
+function getUptime(since) {
+	return moment.duration(moment.now() - since, 'milliseconds').humanize();
+}

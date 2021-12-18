@@ -14,7 +14,6 @@ let db;
 	await require('./modules/db/prepareDb')(db);
 	require('./modules/express/express.config.js')(app, db);
 	require('./modules/express/express.routes.js')(app, db);
-	await refetchProcesses();
 })();
 
 Array.prototype.random = function(count) {
@@ -82,13 +81,14 @@ if (config.BIND_IP.enabled == true) {
 async function startup() {
 	await fetchProc(processes);
 	console.log(chalk.blue('[PROCESSES]: Processes fetched successfully!', JSON.stringify(processes)));
-	require('./modules/db/prepareDb')(db);
+	await require('./modules/db/prepareDb')(db);
+	await refetchProcesses();
 }
 
 let fetchInterval;
 
 async function refetchProcesses() {
-	fetchInterval = setTimeout(async () => {
+	fetchInterval = setInterval(async () => {
 		processes = [];
 		await fetchProc(processes);
 		console.log(chalk.blue('[PROCESSES]: Processes refetched successfully!', JSON.stringify(processes)));
