@@ -1,11 +1,21 @@
 const app = require('express')();
 const chalk = require('chalk');
-const config = require('./dash.config');
-const { fetchProc } = require('./modules/pm2');
+const config = require('./dash.config.js');
+const { fetchProc } = require('./modules/pm2.js');
+const moment = require('moment');
 
-require('./modules/express/configuration')(app);
-require('./modules/express/routes')(app);
-const db = require('./modules/db/db')();
+let db;
+
+(async () => {
+	try {
+		db = require('./modules/db/db.js')();
+	} catch (e) {}
+
+	await require('./modules/db/prepareDb')(db);
+	require('./modules/express/express.config.js')(app, db);
+	require('./modules/express/express.routes.js')(app, db);
+	await refetchProcesses();
+})();
 
 Array.prototype.random = function(count) {
 	if (!count) count = 1;
@@ -71,6 +81,23 @@ if (config.BIND_IP.enabled == true) {
 
 async function startup() {
 	await fetchProc(processes);
-	console.log(chalk.blue('[PROCESSES]: Processed fetch successfully!', JSON.stringify(processes)));
+	console.log(chalk.blue('[PROCESSES]: Processes fetched successfully!', JSON.stringify(processes)));
 	require('./modules/db/prepareDb')(db);
+}
+
+let fetchInterval;
+
+async function refetchProcesses() {
+	processes = [];
+	fetchInterval = setTimeout(async () => {
+		await fetchProc(processes);
+		console.log(chalk.blue('[PROCESSES]: Processes refetched successfully!', JSON.stringify(processes)));
+		db.push('/processes', processes);
+	}, 10 * 1000);
+}
+
+async function stopFetching() {
+	if (fetchInterval) {
+		clearTimeout(fetchInterval);
+	}
 }
