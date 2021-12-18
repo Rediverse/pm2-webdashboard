@@ -10,13 +10,13 @@ const fetchProc = arr =>
 		await exec(listCommand, async (err, processRaw, stderr) => {
 			// console.log(processRaw);
 			await JSON.parse(processRaw).forEach(process => {
-				let realUptime = moment.now() - process.pm2_env.pm_uptime;
-				console.log(realUptime);
+				let uptime = moment.duration(moment.now() - process.pm2_env.pm_uptime, 'milliseconds').humanize();
+				console.log(uptime, moment.now() - process.pm2_env.pm_uptime);
 				arr.push({
 					name: process.name,
 					id: process.pm_id,
 					monit: process.monit,
-					uptime: moment.duration(realUptime, 'milliseconds').humanize(),
+					uptime,
 					status: process.pm2_env.status,
 					version: process.pm2_env.version
 				});
