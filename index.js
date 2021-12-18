@@ -88,7 +88,6 @@ async function startup() {
 let fetchInterval;
 
 async function refetchProcesses() {
-	processes = [];
 	fetchInterval = setTimeout(async () => {
 		await fetchProc(processes);
 		console.log(chalk.blue('[PROCESSES]: Processes refetched successfully!', JSON.stringify(processes)));

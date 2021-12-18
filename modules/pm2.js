@@ -7,6 +7,7 @@ const fetchProc = arr =>
 	new Promise(async resolve => {
 		await exec(listCommand, async (err, processRaw, stderr) => {
 			// console.log(processRaw);
+			arr = [];
 			await JSON.parse(processRaw).forEach(process => {
 				arr.push({ name: process.name, id: process.pm_id, monit: process.monit });
 			});
