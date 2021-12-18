@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include("./head.ejs") %>
+    <title>PM2 Web Dashboard</title>
+</head>
+<body class="bg-gray-900 text-white h-screen">
+    <%- include("./nav.ejs") %>
+    
+    <div class="container mx-auto">
+        <h1 class="text-3xl"><%= process.name %></h1>
+
+        <div class="my-6"></div>
+
+        <h3 class="text-2xl">Manage</h3>
+        <div class="panel my-2">
+            <form action="/process/<%=process.id%>/stop" method="post" class="inline">
+                <input type="submit" value="Stop" class="cursor-pointer px-4 py-2 text-red-500 border-red-500 rounded-lg border bg-transparent hover:bg-red-500 hover:text-white transition-colors duration-250">
+            </form>
+            <form action="/process/<%=process.id%>/start" method="post" class="inline">
+                <input type="submit" value="Start" class="cursor-pointer px-4 py-2 text-green-500 border-green-500 rounded-lg border bg-transparent hover:bg-green-500 hover:text-white transition-colors duration-250">
+            </form>
+            <form action="/process/<%=process.id%>/restart" method="post" class="inline">
+                <input type="submit" value="Restart" class="cursor-pointer px-4 py-2 text-yellow-500 border-yellow-500 rounded-lg border bg-transparent hover:bg-yellow-500 hover:text-white transition-colors duration-250">
+            </form>
+        </div>
+
+        <hr class="my-6 opacity-25">
+
+        <h3 class="text-2xl">Additional Information</h3>
+        <p class="text-lg my-2 stats-id">ID: <%= process.id %></p>
+        <p class="text-lg my-2 stats-name">Name: <%= process.name %></p>
+        <p class="text-lg my-2 stats-ram">RAM: About <%= Math.round(process.monit.memory / 1000000) %>MB</p>
+        <p class="text-lg my-2 stats-cpu">CPU: <%= process.monit.cpu %>%</p>
+        <p class="text-lg my-2 stats-status">Status: <%= process.status %></p>
+        <p class="text-lg my-2 stats-version">Version: <%= process.version %></p>
+        <p class="text-lg my-2 stats-uptime">Uptime: About <%= process.uptime %></p>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        setInterval(() => {
+            fetch(`http://${window.location.hostname}/processData/<%=process.id%>`)
+            .then(resp => resp.json())
+            .then(res => {
+                $(".stats-ram").text(`RAM: About ${Math.round(res.monit.memory / 1000000)}MB`);
+                $(".stats-cpu").text(`CPU: ${res.monit.cpu}%`);
+                $(".stats-status").text(`Status: ${res.status}`);
+                $(".stats-uptime").text(`Uptime: About ${res.uptime}`);
+            })
+        }, 1000);
+    </script>
+</body>
+</html>
