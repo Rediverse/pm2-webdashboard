@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include("./head.ejs") %>
+    <title>PM2Webdash | Setup</title>
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto">
+        <h1 class="text-3xl my-6">PM2 Web Dashboard Setup</h1>
+        <p>Setup your PM2 web dashboard.</p>
+
+        <div class="my-10"></div>
+
+        <% if(setupStep == 0) { %> 
+            <div class="step1">
+                <h3 class="text-2xl">Step 1: Login Credentials</h3>
+                <div class="my-4"></div>
+                <p>Username and Password. It's for security reasons. Nobody other than you should have the permission to do something with your process.</p>
+                <div class="my-4"></div>
+                <form action="/setup/step/1" method="post">
+                    <input type="text" name="username" placeholder="Username" class="bg-gray-800 text-white w-full focus:border-none focus:outline-none px-4 py-2 rounded-lg my-2" required>
+                    <input type="password" name="pwd" placeholder="Password" class="bg-gray-800 text-white w-full focus:border-none focus:outline-none px-4 py-2 rounded-lg my-2" required>
+                    <p class="toggle-hide pwd cursor-pointer">Show Password</p>
+                    <input type="submit" value="Submit" class="cursor-pointer px-4 py-2 text-green-500 border-green-500 rounded-lg border bg-transparent hover:bg-green-500 hover:text-white transition-colors duration-250">
+                </form>
+            </div>
+        <% } else if (setupStep == 1) { %>
+            <div class="step2">
+                <form action="/setup/step/2" method="post">
+                    <h3 class="text-2xl">Step 2: Configure</h3>
+                    <div class="my-4"></div>
+                    <p>Go to the files of the directory which you've cloned the dashboard to and go to dash.config.js. There you can configure your dashboard.</p>
+                    <div class="my-4"></div>
+                    <input type="submit" value="Submit" class="cursor-pointer px-4 py-2 text-green-500 border-green-500 rounded-lg border bg-transparent hover:bg-green-500 hover:text-white transition-colors duration-250">
+                </form>
+            </div>
+        <% } else if (setupStep == 2) { %>
+            <div class="step3">
+                <h3 class="text-2xl">Step 3: Start</h3>
+                <div class="my-4"></div>
+                <p>Stop this process. Then start your dashboard by running the following command in your terminal:</p>
+                <div class="my-4"></div>
+                <pre class="bg-gray-800 text-white p-4 rounded-lg">pm2 start index.js --name PM2Dash</pre>
+                <div class="my-4"></div>
+                <p class="cursor-pointer text-green-400 copy">Copy!</p>
+                <div class="my-4"></div>
+                <form action="/setup/step/3" method="post">
+                    <input type="submit" value="Submit" class="cursor-pointer px-4 py-2 text-green-500 border-green-500 rounded-lg border bg-transparent hover:bg-green-500 hover:text-white transition-colors duration-250">
+                </form>
+            </div>
+        <% } else if (setupStep == 3) { %>
+            <div class="step4">
+                <h3 class="text-2xl">Step 4: Done</h3>
+                <p>You're done! You can now go to <a href="/" class="text-green-400">your dashboard</a>.</p>
+            </div>
+        <% } %>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(".toggle-hide.pwd").click(function() {
+            $(this).toggleClass("active");
+            $(this).text($(this).text() == "Show Password" ? "Hide Password" : "Show Password");
+            $(this).prev().attr("type", $(this).prev().attr("type") == "password" ? "text" : "password");
+        });
+
+        let copyTimeout;
+
+        $("p.copy").click(function() {
+            navigator.clipboard.writeText("pm2 start index.js --name PM2Dash");
+            $("p.copy").text("Copied!");
+            if(copyTimeout) {
+                clearTimeout(copyTimeout);
+            }
+            copyTimeout = setTimeout(() => {
+                $("p.copy").text("Copy!");
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
