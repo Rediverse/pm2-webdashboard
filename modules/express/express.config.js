@@ -1,3 +1,4 @@
+const flash = require('connect-flash');
 const express = require('express');
 
 //Body Parser
@@ -29,6 +30,8 @@ module.exports = function(app, db) {
 			saveUninitialized: false
 		})
 	);
+
+	app.use(flash());
 
 	// use public directory as static
 	app.use(express.static('public'));
