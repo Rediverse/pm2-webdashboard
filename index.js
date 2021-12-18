@@ -89,6 +89,7 @@ let fetchInterval;
 
 async function refetchProcesses() {
 	fetchInterval = setTimeout(async () => {
+		processes = [];
 		await fetchProc(processes);
 		console.log(chalk.blue('[PROCESSES]: Processes refetched successfully!', JSON.stringify(processes)));
 		db.push('/processes', processes);
