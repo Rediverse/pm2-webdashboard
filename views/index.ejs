@@ -4,13 +4,16 @@
     <%- include("./head.ejs") %>
     <title>PM2 Web Dashboard</title>
 </head>
-<body class="bg-gray-900 text-white">
+<body class="bg-gray-900 text-white h-screen">
+    <%- include("./nav.ejs") %>
     <div class="container mx-auto">
         <h1 class="text-3xl my-6">Process Dashboard</h1>
         <h3 class="text-2xl">All Processes</h3>
         <% processes.forEach(process => { %> 
-            <%= process.name %>
+            <a href="/process/<%=process.id%>"><%= process.name %></a>
         <% }) %>
     </div>
+
+    <div class="h-screen"></div>
 </body>
 </html>
