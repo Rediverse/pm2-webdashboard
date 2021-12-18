@@ -47,7 +47,7 @@
                 $(".stats-cpu").text(`CPU: ${res.monit.cpu}%`);
                 $(".stats-status").text(`Status: ${res.status}`);
                 $(".stats-uptime").text(`Uptime: About ${res.uptime}`);
-            })
+            }).catch(() => {})
         }, 1000);
     </script>
 </body>
