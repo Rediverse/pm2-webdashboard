@@ -7,7 +7,10 @@ const BIND_IP = {
 	ip: '127.0.0.1' //the IP address to bind to.
 };
 
+const SESSION_SECRET = 'Kiboad kat'; //Change this to something unique.
+
 module.exports = {
 	PORT,
-	BIND_IP
+	BIND_IP,
+	SESSION_SECRET
 };
