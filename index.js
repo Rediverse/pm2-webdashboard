@@ -88,6 +88,7 @@ async function startup() {
 let fetchInterval;
 
 async function refetchProcesses() {
+	// return;
 	fetchInterval = setInterval(async () => {
 		processes = [];
 		await fetchProc(processes);
