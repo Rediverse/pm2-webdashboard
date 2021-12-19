@@ -32,11 +32,12 @@ module.exports = function(app, db) {
 
 		if (isSetuped == true) {
 			if (!req.user) {
+				req.flash('err', 'You have to be logged in to view this page.');
 				res.redirect('/login');
 				return;
 			}
 			let processes = await db.getData('/processes');
-			res.render('index', { processes });
+			res.render('index', { processes, flash: { err: req.flash('err'), success: req.flash('success') } });
 		} else {
 			res.redirect('/setup');
 		}
@@ -49,6 +50,7 @@ module.exports = function(app, db) {
 	});
 
 	app.get('/logout', loginCheck, (req, res) => {
+		req.flash('success', 'You have logged out successfully!');
 		req.logout();
 		res.redirect('/login');
 	});
@@ -60,16 +62,20 @@ module.exports = function(app, db) {
 		} catch (e) {}
 
 		if (isSetuped == true) {
-			res.render('login');
+			res.render('login', { flash: { err: req.flash('err'), success: req.flash('success') } });
 		} else {
 			res.redirect('/setup');
 		}
 	});
 
 	app.get('/process/:id', loginCheck, async (req, res) => {
-		let processInfo = await db.getData('/processes');
-		let data = await processInfo.filter(process => process.id == req.params.id)[0];
-		res.render('process', { process: data });
+		let processes = await db.getData('/processes');
+		let data = await processes.filter(process => process.id == req.params.id)[0];
+		res.render('process', {
+			process: data,
+			processes,
+			flash: { err: req.flash('err'), success: req.flash('success') }
+		});
 	});
 
 	app.post('/process/:id/:action', loginCheck, async (req, res) => {
@@ -87,7 +93,13 @@ module.exports = function(app, db) {
 		res.redirect('back');
 	});
 
-	app.post('/login', passport.authenticate('local', { failureRedirect: '/login' }), function(req, res) {
+	app.get('/loginfail', (req, res) => {
+		req.flash('err', 'Invalid username or password!');
+		res.redirect('/login');
+	});
+
+	app.post('/login', passport.authenticate('local', { failureRedirect: '/loginfail' }), function(req, res) {
+		req.flash('success', 'Welcome to the dashboard!');
 		res.redirect('/');
 	});
 
