@@ -16,7 +16,7 @@ const fetchProc = arr =>
 
 				uptime = moment.duration(uptime, 'milliseconds').humanize();
 
-				console.log(uptime);
+				// console.log(uptime);
 
 				arr.push({
 					name: process.name,
