@@ -10,16 +10,11 @@ const fetchProc = arr =>
 		await exec(listCommand, async (err, processRaw, stderr) => {
 			// console.log(processRaw);
 			await JSON.parse(processRaw).forEach(async process => {
-				let now = Math.floor(new Date().getTime() / 1000);
-				console.log(
-					now,
-					Math.floor(process.pm2_env.pm_uptime / 1000),
-					now - Math.floor(process.pm2_env.pm_uptime / 1000)
-				);
+				let now = moment.now();
 
-				let uptime = now - Math.floor(process.pm2_env.pm_uptime / 1000);
+				let uptime = now - process.pm2_env.pm_uptime;
 
-				uptime = moment.duration(uptime, 'seconds').humanize();
+				uptime = moment.duration(uptime, 'milliseconds').humanize();
 
 				console.log(uptime);
 
