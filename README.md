@@ -1,5 +1,5 @@
 # pm2-webdashboard
-A web interface for PM2 management.
+A self hosted web interface for PM2 management.
 
 ## How to install
 First, you have to get the dashboard on your server, Raspberry Pi or what ever you will use this on. You can get it using the following command:
