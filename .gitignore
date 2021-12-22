@@ -1,3 +1,6 @@
 node_modules
 
 ./db.json
+./dash.config.js
+dash.config.js
+db.json
