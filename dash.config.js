@@ -1,5 +1,5 @@
 //Your fancy port to run this dashboard on
-const PORT = 80;
+const PORT = 1202;
 
 //Local only
 const BIND_IP = {
