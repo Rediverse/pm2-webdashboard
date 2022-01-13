@@ -43,7 +43,7 @@
             <p class="text-lg my-2 stats-name">Name: <%= process.name %></p>
             <p class="text-lg my-2 stats-ram">RAM: <%= Math.round(process.monit.memory / 1000000) %>MB</p>
             <p class="text-lg my-2 stats-cpu">CPU: <%= process.monit.cpu %>%</p>
-            <p class="text-lg my-2 stats-status">Status: <span class="<%= process.status == "online" ? "bg-green-600" : "bg-red-600" %>"><%= process.status %></span></p>
+            <p class="text-lg my-2 stats-status">Status: <span class="<%= process.status == "online" ? "bg-green-600" : "bg-red-600" %> status"><%= process.status %></span></p>
             <p class="text-lg my-2 stats-version">Version: <%= process.version %></p>
             <% if (status != "stopped") {%><p class="text-lg my-2 stats-uptime">Uptime: Up since <%= process.uptime %></p><%= } %>
         </div>
@@ -52,12 +52,12 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         setInterval(() => {
-            fetch(`http://${window.location.hostname}/processData/<%=process.id%>`)
+            fetch(`http://${window.location.hostname}:${window.location.port}/processData/<%=process.id%>`)
             .then(resp => resp.json())
             .then(res => {
                 $(".stats-ram").text(`RAM: ${Math.round(res.monit.memory / 1000000)}MB`);
                 $(".stats-cpu").text(`CPU: ${res.monit.cpu}%`);
-                $(".stats-status").text(`Status: ${res.status}`);
+                $(".status").text(res.status);
                 $(".stats-uptime").text(`Uptime: Up since ${res.uptime}`);
             }).catch(() => {})
         }, 1000);
