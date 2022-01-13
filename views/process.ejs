@@ -58,6 +58,7 @@
                 $(".stats-ram").text(`RAM: ${Math.round(res.monit.memory / 1000000)}MB`);
                 $(".stats-cpu").text(`CPU: ${res.monit.cpu}%`);
                 $(".status").text(res.status);
+                $(".status").removeClass("bg-green-600").removeClass("bg-red-600").addClass((res.status=="online"?"bg-green-600":"bg-red-600"))
                 $(".stats-uptime").text(`Uptime: Up since ${res.uptime}`);
             }).catch(() => {})
         }, 1000);
