@@ -43,7 +43,7 @@
             <p class="text-lg my-2 stats-name">Name: <%= process.name %></p>
             <p class="text-lg my-2 stats-ram">RAM: <%= Math.round(process.monit.memory / 1000000) %>MB</p>
             <p class="text-lg my-2 stats-cpu">CPU: <%= process.monit.cpu %>%</p>
-            <p class="text-lg my-2 stats-status">Status: <span class="status-<%= process.status %>"><%= process.status %></span></p>
+            <p class="text-lg my-2 stats-status">Status: <span class="<%= process.status == "online" ? "bg-green-600" : "bg-red-600" %>"><%= process.status %></span></p>
             <p class="text-lg my-2 stats-version">Version: <%= process.version %></p>
             <% if (status != "stopped") {%><p class="text-lg my-2 stats-uptime">Uptime: Up since <%= process.uptime %></p><%= } %>
         </div>
@@ -62,15 +62,5 @@
             }).catch(() => {})
         }, 1000);
     </script>
-    
-    <style>
-        .status-online {
-            color: #00ff00;
-        }
-
-        .status-stopped {
-            color: #ff0000;
-        }
-    </style>
 </body>
 </html>
