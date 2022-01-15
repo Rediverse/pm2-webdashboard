@@ -45,7 +45,7 @@
             <p class="text-lg my-2 stats-cpu">CPU: <%= process.monit.cpu %>%</p>
             <p class="text-lg my-2 stats-status">Status: <span class="<%= process.status == "online" ? "bg-green-600" : "bg-red-600" %> status"><%= process.status %></span></p>
             <p class="text-lg my-2 stats-version">Version: <%= process.version %></p>
-            <% if (status != "stopped") {%><p class="text-lg my-2 stats-uptime">Uptime: Up since <%= process.uptime %></p><%= } %>
+            <% if (status != "stopped") {%><p class="text-lg my-2 stats-uptime">Uptime: Up since <%= process.uptime %></p><% } %>
         </div>
     </div>
 
