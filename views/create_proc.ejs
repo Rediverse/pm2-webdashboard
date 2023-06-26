@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <%- include("./head.ejs") %>
+        <title>PM2Webdash</title>
+    </head>
+    <body class="bg-gray-900 text-white">
+        <div class="container mx-auto">
+            <h1 class="text-3xl my-6">PM2 Web Dashboard</h1>
+            <p>Create a new process</p>
+
+            <div class="my-10"></div>
+
+            <form action="/create" method="post">
+                <p>Path to the executable</p>
+                <input
+                    value="/usr/bin/"
+                    type="text"
+                    name="path"
+                    placeholder="Path to the executable"
+                    class="bg-gray-800 text-white w-full focus:border-none focus:outline-none px-4 py-2 rounded-lg my-2"
+                    required
+                />
+                <p>Name of the service</p>
+                <input
+                    type="text"
+                    name="name"
+                    placeholder="Name of the service"
+                    class="bg-gray-800 text-white w-full focus:border-none focus:outline-none px-4 py-2 rounded-lg my-2"
+                />
+                <p>Kill timeout</p>
+                <input
+                    value="0"
+                    min="0"
+                    type="number"
+                    name="kill_timeout"
+                    placeholder="Kill timeout"
+                    class="bg-gray-800 text-white w-full focus:border-none focus:outline-none px-4 py-2 rounded-lg my-2"
+                    required
+                />
+                <p>Restart delay</p>
+                <input
+                    value="0"
+                    min="0"
+                    type="number"
+                    name="restart_delay"
+                    placeholder="Restart delay"
+                    class="bg-gray-800 text-white w-full focus:border-none focus:outline-none px-4 py-2 rounded-lg my-2"
+                    required
+                />
+                <p>The maximum amount of memory before a restart</p>
+                <input
+                    value="0"
+                    min="0"
+                    type="number"
+                    name="max_mem"
+                    placeholder="The maximum amount of memory before a restart"
+                    class="bg-gray-800 text-white w-full focus:border-none focus:outline-none px-4 py-2 rounded-lg my-2"
+                    required
+                />
+                <p>Arguments</p>
+                <input
+                    type="text"
+                    name="args"
+                    placeholder="Arguments"
+                    class="bg-gray-800 text-white w-full focus:border-none focus:outline-none px-4 py-2 rounded-lg my-2"
+                />
+                <p>Node Arguments</p>
+                <input
+                    type="text"
+                    name="node_args"
+                    placeholder="Node Arguments"
+                    class="bg-gray-800 text-white w-full focus:border-none focus:outline-none px-4 py-2 rounded-lg my-2"
+                />
+                <input
+                    type="submit"
+                    value="Create"
+                    class="cursor-pointer px-4 py-2 text-green-500 border-green-500 rounded-lg border bg-transparent hover:bg-green-500 hover:text-white transition-colors duration-250"
+                />
+            </form>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    </body>
+</html>

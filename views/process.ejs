@@ -1,66 +1,177 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <%- include("./head.ejs") %>
-    <title>PM2 Web Dashboard</title>
-</head>
-<body class="bg-gray-900 text-white h-screen">
-    <%- include("./nav.ejs") %>
-    
-    <div class="grid gap-4 grid-cols-1 xl:grid-cols-8">
-        <div class="col-span-1 hidden xl:block h-full bg-gray-800 rounded-br-xl filter drop-shadow-xl">
-            <div class="grid gap-4 grid-cols-1 mx-2">
-                <% processes.forEach(process => { %> 
-                    <a href="/process/<%=process.id%>">
+    <head>
+        <%- include("./head.ejs") %>
+        <title>PM2 Web Dashboard</title>
+    </head>
+    <body class="bg-gray-900 text-white h-screen">
+        <%- include("./nav.ejs") %>
+
+        <div class="grid gap-4 grid-cols-1 xl:grid-cols-8">
+            <div
+                class="col-span-1 hidden xl:block h-full bg-gray-800 rounded-br-xl filter drop-shadow-xl"
+            >
+                <div class="grid gap-4 grid-cols-1 mx-2">
+                    <% processes.forEach(process => { %>
+                    <a href="/process/<%=process.name%>">
                         <p class="text-xl"><%= process.name %></p>
                     </a>
-                <% }) %>
+                    <% }) %>
+                </div>
             </div>
-        </div>
-        <div class="container mx-auto col-span-1 xl:col-span-7">
-            <%- include("./flashes.ejs", { flash: flash }) %>
-            <h1 class="text-3xl"><%= process.name %></h1>
-    
-            <div class="my-6"></div>
-    
-            <h3 class="text-2xl">Manage</h3>
-            <div class="panel my-2">
-                <form action="/process/<%=process.id%>/stop" method="post" class="inline">
-                    <input type="submit" value="Stop" class="cursor-pointer px-4 py-2 text-red-500 border-red-500 rounded-lg border bg-transparent hover:bg-red-500 hover:text-white transition-colors duration-250">
-                </form>
-                <form action="/process/<%=process.id%>/start" method="post" class="inline">
-                    <input type="submit" value="Start" class="cursor-pointer px-4 py-2 text-green-500 border-green-500 rounded-lg border bg-transparent hover:bg-green-500 hover:text-white transition-colors duration-250">
-                </form>
-                <form action="/process/<%=process.id%>/restart" method="post" class="inline">
-                    <input type="submit" value="Restart" class="cursor-pointer px-4 py-2 text-yellow-500 border-yellow-500 rounded-lg border bg-transparent hover:bg-yellow-500 hover:text-white transition-colors duration-250">
-                </form>
-            </div>
-    
-            <hr class="my-6 opacity-25">
-    
-            <h3 class="text-2xl">Additional Information</h3>
-            <p class="text-lg my-2 stats-id">ID: <%= process.id %></p>
-            <p class="text-lg my-2 stats-name">Name: <%= process.name %></p>
-            <p class="text-lg my-2 stats-ram">RAM: <%= Math.round(process.monit.memory / 1000000) %>MB</p>
-            <p class="text-lg my-2 stats-cpu">CPU: <%= process.monit.cpu %>%</p>
-            <p class="text-lg my-2 stats-status">Status: <%= process.status %></p>
-            <p class="text-lg my-2 stats-version">Version: <%= process.version %></p>
-            <p class="text-lg my-2 stats-uptime">Uptime: Up since <%= process.uptime %></p>
-        </div>
-    </div>
+            <div class="container mx-auto col-span-1 xl:col-span-7">
+                <%- include("./flashes.ejs", { flash: flash }) %>
+                <h1 class="text-3xl"><%= process.name %></h1>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        setInterval(() => {
-            fetch(`http://${window.location.hostname}/processData/<%=process.id%>`)
-            .then(resp => resp.json())
-            .then(res => {
-                $(".stats-ram").text(`RAM: ${Math.round(res.monit.memory / 1000000)}MB`);
-                $(".stats-cpu").text(`CPU: ${res.monit.cpu}%`);
-                $(".stats-status").text(`Status: ${res.status}`);
-                $(".stats-uptime").text(`Uptime: Up since ${res.uptime}`);
-            }).catch(() => {})
-        }, 1000);
-    </script>
-</body>
+                <div class="my-6"></div>
+
+                <h3 class="text-2xl">Manage</h3>
+                <div class="panel my-2">
+                    <form
+                        action="/process/<%=process.name%>/stop"
+                        method="post"
+                        class="inline"
+                    >
+                        <input
+                            type="submit"
+                            value="Stop"
+                            class="cursor-pointer px-4 py-2 text-red-500 border-red-500 rounded-lg border bg-transparent hover:bg-red-500 hover:text-white transition-colors duration-250"
+                        />
+                    </form>
+                    <form
+                        action="/process/<%=process.name%>/remove"
+                        method="post"
+                        class="inline"
+                    >
+                        <input
+                            type="submit"
+                            value="Remove"
+                            class="cursor-pointer px-4 py-2 text-red-500 border-red-500 rounded-lg border bg-transparent hover:bg-red-500 hover:text-white transition-colors duration-250"
+                        />
+                    </form>
+                    <form
+                        action="/process/<%=process.name%>/start"
+                        method="post"
+                        class="inline"
+                    >
+                        <input
+                            type="submit"
+                            value="Start"
+                            class="cursor-pointer px-4 py-2 text-green-500 border-green-500 rounded-lg border bg-transparent hover:bg-green-500 hover:text-white transition-colors duration-250"
+                        />
+                    </form>
+                    <form
+                        action="/process/<%=process.name%>/restart"
+                        method="post"
+                        class="inline"
+                    >
+                        <input
+                            type="submit"
+                            value="Restart"
+                            class="cursor-pointer px-4 py-2 text-yellow-500 border-yellow-500 rounded-lg border bg-transparent hover:bg-yellow-500 hover:text-white transition-colors duration-250"
+                        />
+                    </form>
+                    <form
+                        action="/process/<%=process.name%>/clearlogs"
+                        method="post"
+                        class="inline"
+                    >
+                        <input
+                            type="submit"
+                            value="Clear the logs"
+                            class="cursor-pointer px-4 py-2 text-yellow-500 border-yellow-500 rounded-lg border bg-transparent hover:bg-yellow-500 hover:text-white transition-colors duration-250"
+                        />
+                    </form>
+                </div>
+
+                <hr class="my-6 opacity-25" />
+
+                <h3 class="text-2xl">Additional Information</h3>
+                <p class="text-lg my-2 stats-name">Name: <%= process.name %></p>
+                <p class="text-lg my-2">File: <%= process.pm_exec_path %></p>
+                <p class="text-lg my-2 stats-ram">
+                    RAM: <%= Math.round(process.memory_usage / 1000000) %>MB
+                </p>
+                <p class="text-lg my-2 stats-cpu">
+                    CPU: <%= process.cpu_usage %>%
+                </p>
+                <p class="text-lg my-2">
+                    Status: 
+                    <span style="color:<%= process.status == "online" ? "green" : "red" %>;" class="stats-status">
+                        <%= process.status[0].toUpperCase() + process.status.substring(1) %>
+                    </span>
+                </p>
+                <p class="text-lg my-2 stats-version">
+                    Version: <%= process.version %>
+                </p>
+                <p class="text-lg my-2 stats-uptime">
+                    Uptime: Up since <%= process.humanized_uptime %>
+                </p>
+                <p class="text-lg my-2">
+                    Created: <%= process.humanized_created_at %>
+                </p>
+                <% if (process.args.length > 0) {%>
+                <p class="text-lg my-2">
+                    Arguments: <%= process.args.join(' ') %>
+                </p>
+                <%}%>
+                <p class="text-lg my-2 stats-pid">PID: <%= process.pid %></p>
+                <p class="text-lg my-2">
+                    Working Directory: <%= process.pm_cwd %>
+                </p>
+                <p class="text-lg my-2">
+                    Watch Mode: <%= process.watch ? "Yes" : "No" %>
+                </p>
+                <p class="text-lg my-2">
+                    Autorestart: <%= process.autorestart ? "Yes" : "No" %>
+                </p>
+                <h3 class="text-2xl">
+                    Stdout (<%= process.pm_out_log_path %>)
+                </h3>
+                <pre class="stats-stdout"></pre>
+                <h3 class="text-2xl">
+                    Stderr (<%= process.pm_err_log_path %>)
+                </h3>
+                <pre class="stats-stderr"></pre>
+            </div>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            setInterval(() => {
+                fetch(
+                    `${window.location.origin}/processData/<%=process.name%>`,
+                    { credentials: 'include' }
+                )
+                    .then((resp) => resp.json())
+                    .then((res) => {
+                        $('.stats-ram').text(
+                            `RAM: ${Math.round(res.memory_usage / 1000000)}MB`
+                        );
+                        $('.stats-cpu').text(`CPU: ${res.cpu_usage}%`);
+                        $('.stats-status').text(`${res.status[0].toUpperCase()}${res.status.substring(1)}`).attr('style', `color: ${res.status == 'online' ? 'green' : 'red'};`);
+                        $('.stats-uptime').text(
+                            `Uptime: Up since ${res.humanized_uptime}`
+                        );
+                        $('.stats-pid').text(`PID: ${res.pid}`);
+                    })
+                    .catch(() => {});
+            }, 1000);
+            function fetchLogs() {
+                fetch(`${window.location.origin}/logs/<%=process.name%>`, {
+                    credentials: 'include',
+                })
+                    .then((resp) => resp.json())
+                    .then((resp) => {
+                        if (typeof resp.message == 'undefined') {
+                            $('.stats-stderr')[0].textContent = resp.stderr;
+                            $('.stats-stdout')[0].textContent = resp.stdout;
+                        }
+                    })
+                    .catch(() => {});
+            }
+            fetchLogs();
+            setInterval(fetchLogs, 5000);
+        </script>
+    </body>
 </html>
