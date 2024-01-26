@@ -1,30 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <%- include("./head.ejs") %>
-    <title>PM2Webdash | Login</title>
-</head>
-<body class="bg-gray-900 text-white">
-    <div class="container mx-auto">
-        <%- include("./flashes.ejs", { flash: flash }) %>
-        <h1 class="text-3xl my-6">Login</h1>
-        <p>Please login to use this dashboard.</p>
+    <head>
+        <%- include("./head.ejs") %>
+        <title>PM2Webdash | Login</title>
+    </head>
+    <body class="bg-gray-900 text-white">
+        <div class="container mx-auto">
+            <%- include("./flashes.ejs", { flash: flash }) %>
+            <h1 class="text-3xl my-6">Login</h1>
+            <p>Please login to use this dashboard.</p>
 
-        <form action="/login" method="post" class="w-full">
-            <input type="text" name="username" placeholder="Username" class="bg-gray-800 text-white w-full focus:border-none focus:outline-none px-4 py-2 rounded-lg my-2">
-            <input type="password" name="pwd" placeholder="Password" class="bg-gray-800 text-white w-full focus:border-none focus:outline-none px-4 py-2 rounded-lg my-2">
-            <p class="toggle-hide pwd cursor-pointer">Show Password</p>
-            <input type="submit" value="Submit" class="cursor-pointer px-4 py-2 text-green-500 border-green-500 rounded-lg border bg-transparent hover:bg-green-500 hover:text-white transition-colors duration-250">
-        </form>
-    </div>
+            <form action="/login" method="post" class="w-full">
+                <input
+                    type="text"
+                    name="username"
+                    placeholder="Username"
+                    class="bg-gray-800 text-white w-full focus:border-none focus:outline-none px-4 py-2 rounded-lg my-2"
+                />
+                <input
+                    type="password"
+                    name="pwd"
+                    placeholder="Password"
+                    class="bg-gray-800 text-white w-full focus:border-none focus:outline-none px-4 py-2 rounded-lg my-2"
+                />
+                <p class="toggle-hide pwd cursor-pointer">Show Password</p>
+                <input
+                    type="submit"
+                    value="Submit"
+                    class="cursor-pointer px-4 py-2 text-green-500 border-green-500 rounded-lg border bg-transparent hover:bg-green-500 hover:text-white transition-colors duration-250"
+                />
+            </form>
+        </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(".toggle-hide.pwd").click(function() {
-            $(this).toggleClass("active");
-            $(this).text($(this).text() == "Show Password" ? "Hide Password" : "Show Password");
-            $(this).prev().attr("type", $(this).prev().attr("type") == "password" ? "text" : "password");
-        });
-    </script>
-</body>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            $('.toggle-hide.pwd').click(function () {
+                $(this).toggleClass('active');
+                $(this).text(
+                    $(this).text() == 'Show Password'
+                        ? 'Hide Password'
+                        : 'Show Password'
+                );
+                $(this)
+                    .prev()
+                    .attr(
+                        'type',
+                        $(this).prev().attr('type') == 'password'
+                            ? 'text'
+                            : 'password'
+                    );
+            });
+        </script>
+        <%- include("./footer.ejs") %>
+    </body>
 </html>
