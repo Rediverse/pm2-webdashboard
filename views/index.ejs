@@ -1,26 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <%- include("./head.ejs") %>
-    <title>PM2 Web Dashboard</title>
-</head>
-<body class="bg-gray-900 text-white h-screen">
-    <%- include("./nav.ejs") %>
-    <div class="container mx-auto">
-        <%- include("./flashes.ejs", { flash: flash }) %>
-        <h1 class="text-3xl my-6">Process Dashboard</h1>
-        <h3 class="text-2xl">All Processes</h3>
-        <div class="grid gap-4 grid-cols-1 lg:grid-cols-3 w-full justify-items-center">
-            <% processes.forEach(process => { %> 
-                <a href="/process/<%=process.id%>">
-                    <div class="bg-gray-800 w-full flex items-center text-center w-full md:w-80 h-48 rounded-lg hover:bg-opacity-25 border-4 border-transparent hover:border-green-600 transition-all duration-250">
+    <head>
+        <%- include("./head.ejs") %>
+        <title>PM2 Web Dashboard</title>
+    </head>
+    <body class="bg-gray-900 text-white h-screen">
+        <%- include("./nav.ejs") %>
+        <div class="container mx-auto">
+            <%- include("./flashes.ejs", { flash: flash }) %>
+            <h1 class="text-3xl my-6">Process Dashboard at <%= pc_name %></h1>
+            <button
+                class="cursor-pointer px-4 py-2 text-1xl mb-7 text-green-500 border-green-500 rounded-lg border bg-transparent hover:bg-green-500 hover:text-white transition-colors duration-250"
+                onclick="window.location.pathname='/create'"
+            >
+                Create new Process
+            </button>
+            <h3 class="text-2xl">All Processes</h3>
+            <div
+                class="grid gap-4 grid-cols-1 lg:grid-cols-3 w-full justify-items-center"
+            >
+                <% processes.forEach(process => { %>
+                <a href="/process/<%=process.name%>">
+                    <div
+                        class="bg-gray-800 w-full flex items-center text-center w-full md:w-80 h-48 rounded-lg hover:bg-opacity-25 border-4 border-transparent hover:border-green-600 transition-all duration-250"
+                    >
                         <p class="text-xl w-full"><%= process.name %></p>
                     </div>
                 </a>
-            <% }) %>
+                <% }) %>
+            </div>
         </div>
-    </div>
 
-    <!-- <div class="h-screen"></div> -->
-</body>
+        <%- include("./footer.ejs") %>
+        <!-- <div class="h-screen"></div> -->
+    </body>
 </html>
